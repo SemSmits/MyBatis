@@ -1,6 +1,8 @@
 package ovchip.main;
 
+import ovchip.dao.OVChipkaartDAO;
 import ovchip.dao.ReizigerDAO;
+import ovchip.domain.OVChipkaart;
 import ovchip.domain.Reiziger;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -21,10 +23,11 @@ public class Main {
             try (SqlSession session = sqlSessionFactory.openSession()) {
                 // Krijg de ReizigerMapper
                 ReizigerDAO reizigerDAO = session.getMapper(ReizigerDAO.class);
+                OVChipkaartDAO ovchipkaartDAO = session.getMapper(OVChipkaartDAO.class);
 
                 // Voeg een nieuwe reiziger toe
                 Reiziger nieuweReiziger = new Reiziger();
-                nieuweReiziger.setId(600);
+                nieuweReiziger.setId(52);
                 nieuweReiziger.setVoorletters("J");
                 nieuweReiziger.setTussenvoegsel("van");
                 nieuweReiziger.setAchternaam("Dijk");
@@ -47,10 +50,30 @@ public class Main {
                 session.commit();
                 System.out.println("Reiziger bijgewerkt: " + nieuweReiziger);
 
-                // Reiziger verwijderen
-                reizigerDAO.delete(nieuweReiziger.getId());
+                // Voeg een nieuwe OV-chipkaart toe aan deze reiziger
+                OVChipkaart ovChipkaart = new OVChipkaart();
+                ovChipkaart.setKaartNummer(12347);
+                ovChipkaart.setGeldigTot(LocalDate.of(2025, 12, 31));
+                ovChipkaart.setKlasse(2);
+                ovChipkaart.setSaldo(50.0);
+                ovChipkaart.setReizigerId(nieuweReiziger.getId());
+                ovchipkaartDAO.save(ovChipkaart);
                 session.commit();
-                System.out.println("Reiziger verwijderd: " + nieuweReiziger.getId());
+                System.out.println("OVChipkaart toegevoegd: " + ovChipkaart);
+
+                // Haal alle OV-chipkaarten op van de reiziger
+                List<OVChipkaart> ovChipkaarten = ovchipkaartDAO.findByReiziger(nieuweReiziger.getId());
+                System.out.println("OVChipkaarten van reiziger:");
+                for (OVChipkaart kaart : ovChipkaarten) {
+                    System.out.println(kaart);
+                }
+
+                // Verwijder eerst de gerelateerde OV-chipkaarten
+                for (OVChipkaart kaart : ovChipkaarten) {
+                    ovchipkaartDAO.delete(kaart);
+                }
+                session.commit();
+                System.out.println("Alle OVChipkaarten van reiziger verwijderd.");
             }
         } catch (IOException e) {
             e.printStackTrace();

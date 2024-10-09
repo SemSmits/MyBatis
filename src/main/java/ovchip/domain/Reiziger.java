@@ -1,6 +1,7 @@
 package ovchip.domain;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Reiziger {
 
@@ -13,6 +14,8 @@ public class Reiziger {
     private String achternaam;
 
     private LocalDate geboortedatum;
+
+    private List<OVChipkaart> ovChipkaarten;
 
     public Reiziger() {
     }
@@ -65,6 +68,12 @@ public class Reiziger {
         this.geboortedatum = geboortedatum;
     }
 
+    public List<OVChipkaart> getOvChipkaarten() {
+        return ovChipkaarten;
+    }
+    public void setOvChipkaarten(List<OVChipkaart> ovChipkaarten) {
+        this.ovChipkaarten = ovChipkaarten;
+    }
     @Override
     public String toString() {
         return "Reiziger {" +

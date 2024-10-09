@@ -2,45 +2,47 @@ package ovchip.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import ovchip.domain.OVChipkaart;
 import ovchip.domain.Reiziger;
 
 import java.util.List;
 
-public class ReizigerDAOMyBatis implements ReizigerDAO {
+public class OVChipkaartDAOMyBatis implements OVChipkaartDAO {
     private SqlSessionFactory sqlSessionFactory;
 
-    public ReizigerDAOMyBatis(SqlSessionFactory sqlSessionFactory) {
+    public OVChipkaartDAOMyBatis(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
     @Override
-    public List<Reiziger> findAll() {
+    public void save(OVChipkaart ovChipkaart) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            return session.selectList("ovchip.dao.ReizigerDAO.findAll");
-        }
-    }
-
-    @Override
-    public void save(Reiziger reiziger) {
-        try (SqlSession session = sqlSessionFactory.openSession()) {
-            session.insert("ovchip.dao.ReizigerDAO.save", reiziger);
+            session.insert("ovchip.dao.AdresDAO.save", ovChipkaart);
             session.commit();
         }
     }
 
     @Override
-    public void update(Reiziger reiziger) {
+    public void update(OVChipkaart ovChipkaart) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            session.update("ovchip.dao.ReizigerDAO.update", reiziger);
+            session.update("ovchip.dao.AdresDAO.update", ovChipkaart);
             session.commit();
         }
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(OVChipkaart ovChipkaart) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            session.delete("ovchip.dao.ReizigerDAO.delete", id);
+            session.delete("ovchip.dao.AdresDAO.delete", ovChipkaart);
             session.commit();
         }
     }
+
+    @Override
+    public List<OVChipkaart> findByReiziger(int reizigerId) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            return session.selectList("ovchip.dao.OVChipkaartDAO.findByReiziger", reizigerId);
+        }
+    }
+
 }
