@@ -17,7 +17,7 @@ public class OVChipkaartDAOMyBatis implements OVChipkaartDAO {
     @Override
     public void save(OVChipkaart ovChipkaart) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            session.insert("ovchip.dao.AdresDAO.save", ovChipkaart);
+            session.insert("ovchip.dao.OVChipkaart.save", ovChipkaart);
             session.commit();
         }
     }
@@ -25,7 +25,7 @@ public class OVChipkaartDAOMyBatis implements OVChipkaartDAO {
     @Override
     public void update(OVChipkaart ovChipkaart) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            session.update("ovchip.dao.AdresDAO.update", ovChipkaart);
+            session.update("ovchip.dao.OVChipkaartDAO.update", ovChipkaart);
             session.commit();
         }
     }
@@ -33,7 +33,7 @@ public class OVChipkaartDAOMyBatis implements OVChipkaartDAO {
     @Override
     public void delete(OVChipkaart ovChipkaart) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            session.delete("ovchip.dao.AdresDAO.delete", ovChipkaart);
+            session.delete("ovchip.dao.OVChipkaartDAO.delete", ovChipkaart);
             session.commit();
         }
     }
@@ -42,6 +42,20 @@ public class OVChipkaartDAOMyBatis implements OVChipkaartDAO {
     public List<OVChipkaart> findByReiziger(int reizigerId) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             return session.selectList("ovchip.dao.OVChipkaartDAO.findByReiziger", reizigerId);
+        }
+    }
+
+    @Override
+    public List<OVChipkaart> findAll() {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            return session.selectList("ovchip.dao.OVChipkaartDAO.findAll");
+        }
+    }
+
+    @Override
+    public OVChipkaart findById(int id) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            return session.selectOne("ovchip.dao.OVChipkaartDAO.find", id);
         }
     }
 

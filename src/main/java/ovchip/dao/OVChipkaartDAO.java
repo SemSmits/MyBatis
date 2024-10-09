@@ -10,5 +10,7 @@ public interface OVChipkaartDAO {
     void update(OVChipkaart ovChipkaart);
     void delete(OVChipkaart ovChipkaart);
     List<OVChipkaart> findByReiziger(int reizigerId);
+    List<OVChipkaart> findAll();
+    OVChipkaart findById(int id);
 }
 

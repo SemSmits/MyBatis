@@ -5,7 +5,15 @@
 
 <mapper namespace="ovchip.dao.OVChipkaartDAO">
 
-    <select id="findByReiziger" parameterType="int" resultType="ovchip.domain.OVChipkaart">
+    <resultMap id="OVChipkaartResultMap" type="ovchip.domain.OVChipkaart">
+        <id property="kaartNummer" column="kaart_nummer"/>
+        <result property="geldigTot" column="geldig_tot"/>
+        <result property="klasse" column="klasse"/>
+        <result property="saldo" column="saldo"/>
+        <result property="reizigerId" column="reiziger_id"/>
+    </resultMap>
+
+    <select id="findByReiziger" parameterType="int" resultMap="OVChipkaartResultMap">
         SELECT * FROM ov_chipkaart
         WHERE reiziger_id = #{reizigerId}
     </select>
@@ -24,4 +32,12 @@
     <delete id="delete" parameterType="int">
         DELETE FROM ov_chipkaart WHERE kaart_nummer = #{kaartNummer}
     </delete>
+
+    <select id="findById" parameterType="int" resultMap="OVChipkaartResultMap">
+        SELECT * FROM ov_chipkaart WHERE kaart_nummer = #{kaartNummer}
+    </select>
+
+    <select id="findAll" resultMap="OVChipkaartResultMap">
+        SELECT * FROM ov_chipkaart
+    </select>
 </mapper>
