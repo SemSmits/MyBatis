@@ -5,7 +5,15 @@
 
 <mapper namespace="ovchip.dao.ReizigerDAO">
 
-    <select id="findAll" resultType="ovchip.domain.Reiziger">
+    <resultMap id="ReizigerResultMap" type="ovchip.domain.Reiziger">
+        <id property="id" column="reiziger_id"/>
+        <id property="voorletters" column="voorletters"/>
+        <id property="tussenvoegsel" column="tussenvoegsel"/>
+        <id property="achternaam" column="achternaam"/>
+        <id property="geboortedatum" column="geboortedatum"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="ReizigerResultMap">
         SELECT * FROM reiziger
     </select>
 
@@ -26,5 +34,13 @@
     <delete id="delete" parameterType="int">
         DELETE FROM reiziger WHERE reiziger_id = #{id}
     </delete>
+
+    <select id="findById" parameterType="int" resultMap="ReizigerResultMap">
+        SELECT * FROM reiziger WHERE reiziger_id = #{id}
+    </select>
+
+    <select id="findByGbdatum" parameterType="Date" resultMap="ReizigerResultMap">
+        SELECT * FROM reiziger WHERE geboortedatum = #{geboortedatum}
+    </select>
 
 </mapper>

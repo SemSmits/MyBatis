@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import ovchip.domain.Reiziger;
 
+import java.sql.Date;
 import java.util.List;
 
 public class ReizigerDAOMyBatis implements ReizigerDAO {
@@ -41,6 +42,20 @@ public class ReizigerDAOMyBatis implements ReizigerDAO {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             session.delete("ovchip.dao.ReizigerDAO.delete", id);
             session.commit();
+        }
+    }
+
+    @Override
+    public Reiziger findById(int id) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            return session.selectOne("ovchip.dao.ReizigerDAO.findById", id);
+        }
+    }
+
+    @Override
+    public List<Reiziger> findByGbdatum(Date date) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            return session.selectList("ovchip.dao.ReizigerDAO.findByGbdatum", date);
         }
     }
 }
