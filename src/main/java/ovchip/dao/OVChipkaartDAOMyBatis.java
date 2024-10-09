@@ -17,7 +17,7 @@ public class OVChipkaartDAOMyBatis implements OVChipkaartDAO {
     @Override
     public void save(OVChipkaart ovChipkaart) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            session.insert("ovchip.dao.OVChipkaart.save", ovChipkaart);
+            session.insert("ovchip.dao.OVChipkaartDAO.save", ovChipkaart);
             session.commit();
         }
     }
