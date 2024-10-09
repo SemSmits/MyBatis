@@ -1,7 +1,9 @@
 package ovchip.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class OVChipkaart {
     private int kaartNummer;
@@ -9,6 +11,7 @@ public class OVChipkaart {
     private int klasse;
     private double saldo;
     private int reizigerId;
+    private List<Product> producten = new ArrayList<>();
 
     public OVChipkaart() {
     }
@@ -59,6 +62,14 @@ public class OVChipkaart {
 
     public void setReizigerId(int reizigerId) {
         this.reizigerId = reizigerId;
+    }
+
+    public List<Product> getProducten() {
+        return producten;
+    }
+
+    public void setProducten(List<Product> producten) {
+        this.producten = producten;
     }
 
     @Override

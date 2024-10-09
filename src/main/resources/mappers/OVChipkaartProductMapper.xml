@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ovchip.dao.OVChipkaartProductDAO">
+    <resultMap id="OVChipkaartResultMap" type="ovchip.domain.OVChipkaart">
+        <id property="kaartNummer" column="kaart_nummer"/>
+        <result property="geldigTot" column="geldig_tot"/>
+        <result property="klasse" column="klasse"/>
+        <result property="saldo" column="saldo"/>
+        <result property="reizigerId" column="reiziger_id"/>
+        <collection javaType="ArrayList" property="producten" resultMap="ProductResultMap"/>
+    </resultMap>
+
+    <resultMap id="ProductResultMap" type="ovchip.domain.Product">
+        <id property="productNummer" column="product_nummer"/>
+        <result property="naam" column="naam"/>
+        <result property="beschrijving" column="beschrijving"/>
+        <result property="prijs" column="prijs"/>
+        <collection javaType="ArrayList" property="ovChipkaarten" resultMap="OVChipkaartResultMap"/>
+    </resultMap>
+
+    <resultMap id="OVChipkaartProductResultMap" type="ovchip.domain.OVChipkaartProduct">
+        <id property="productNummer" column="product_nummer"/>
+        <result property="kaartNummer" column="kaart_nummer"/>
+    </resultMap>
+
+
+    <insert id="addProduct">
+        INSERT INTO ov_chipkaart_product (kaart_nummer, product_nummer)
+        VALUES (#{kaartNummer}, #{productNummer})
+    </insert>
+
+    <delete id="deleteProduct">
+        DELETE FROM ov_chipkaart_product
+        WHERE 1=1
+        AND kaart_nummer = #{kaartNummer}
+        AND product_nummer = #{productNummer}
+    </delete>
+
+    <select id="getOVChipkaartProducten" resultMap="OVChipkaartProductResultMap">
+        SELECT product_nummer, kaart_nummer
+        FROM ov_chipkaart_product
+        WHERE kaart_nummer = #{kaartNummer}
+    </select>
+
+
+    <select id="getProductenByOVChipkaart" resultMap="OVChipkaartProductResultMap">
+        SELECT o.kaart_nummer, p.product_nummer, p.naam
+        FROM ov_chipkaart o
+        JOIN ov_chipkaart_product op ON o.kaart_nummer = op.kaart_nummer
+        JOIN product p ON p.product_nummer = op.product_nummer
+        WHERE o.kaart_nummer = #{kaartNummer}
+    </select>
+
+    <select id="getOVChipkaartenByProduct" resultMap="OVChipkaartProductResultMap">
+        SELECT p.product_nummer, o.kaart_nummer
+        FROM product p
+        JOIN ov_chipkaart_product op ON p.product_nummer = op.product_nummer
+        JOIN ov_chipkaart o ON o.kaart_nummer = op.product_nummer
+        WHERE p.product_nummer = #{productNummer}
+    </select>
+</mapper>
+
+<!-- https://stackoverflow.com/questions/20657566/how-to-implement-manytomany-relationship-in-mybatis -->
