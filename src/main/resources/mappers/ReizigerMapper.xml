@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ovchip.dao.ReizigerDAO">
+
+    <select id="findAll" resultType="ovchip.domain.Reiziger">
+        SELECT * FROM reiziger
+    </select>
+
+    <insert id="save" parameterType="ovchip.domain.Reiziger">
+        INSERT INTO reiziger (reiziger_id, voorletters, tussenvoegsel, achternaam, geboortedatum)
+        VALUES (#{id}, #{voorletters}, #{tussenvoegsel}, #{achternaam}, #{geboortedatum})
+    </insert>
+
+    <update id="update" parameterType="ovchip.domain.Reiziger">
+        UPDATE reiziger
+        SET voorletters = #{voorletters},
+            tussenvoegsel = #{tussenvoegsel},
+            achternaam = #{achternaam},
+            geboortedatum = #{geboortedatum}
+        WHERE reiziger_id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM reiziger WHERE reiziger_id = #{id}
+    </delete>
+
+</mapper>
