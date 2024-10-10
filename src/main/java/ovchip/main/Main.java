@@ -50,6 +50,17 @@ public class Main {
                 session.commit();
                 System.out.println("Reiziger bijgewerkt: " + nieuweReiziger);
 
+                // Reiziger ophalen met id
+                reizigerDAO.findById(nieuweReiziger.getId());
+                session.commit();
+                System.out.println("Reiziger met id: " + nieuweReiziger.getId() + "\n" + nieuweReiziger);
+
+                // Reiziger ophalen met geboortedatum
+                LocalDate geboortedatum = LocalDate.of(1990, 1, 1);
+                reizigerDAO.findByGbdatum(java.sql.Date.valueOf(geboortedatum));
+                session.commit();
+                System.out.println("Reiziger met de geboortedatum: " + geboortedatum + "\n" + nieuweReiziger);
+
                 // Voeg een nieuwe OV-chipkaart toe aan deze reiziger
                 OVChipkaart ovChipkaart = new OVChipkaart();
                 ovChipkaart.setKaartNummer(12347);
@@ -74,6 +85,11 @@ public class Main {
                 }
                 session.commit();
                 System.out.println("Alle OVChipkaarten van reiziger verwijderd.");
+
+                // Verwijder de aangemaakte reiziger
+                reizigerDAO.delete(nieuweReiziger.getId());
+                session.commit();
+                System.out.println("Reiziger verwijderd: " + nieuweReiziger);
             }
         } catch (IOException e) {
             e.printStackTrace();
