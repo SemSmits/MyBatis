@@ -1,9 +1,11 @@
 package ovchip.main;
 
 import ovchip.dao.OVChipkaartDAO;
+import ovchip.dao.OVChipkaartProductDAO;
 import ovchip.dao.ProductDAO;
 import ovchip.dao.ReizigerDAO;
 import ovchip.domain.OVChipkaart;
+import ovchip.domain.OVChipkaartProduct;
 import ovchip.domain.Product;
 import ovchip.domain.Reiziger;
 import org.apache.ibatis.io.Resources;
@@ -27,6 +29,7 @@ public class Main {
                 ReizigerDAO reizigerDAO = session.getMapper(ReizigerDAO.class);
                 OVChipkaartDAO ovchipkaartDAO = session.getMapper(OVChipkaartDAO.class);
                 ProductDAO productDAO = session.getMapper(ProductDAO.class);
+                OVChipkaartProductDAO ovchipkaartProductDAO = session.getMapper(OVChipkaartProductDAO.class);
 
                 // Voeg een nieuwe reiziger toe
                 Reiziger nieuweReiziger = new Reiziger();
@@ -129,6 +132,37 @@ public class Main {
                 productDAO.findById(nieuwProduct.getProductNummer());
                 session.commit();
                 System.out.println("Product met id: " + nieuwProduct.getProductNummer() + "\n" + nieuwProduct);
+
+                // Koppel OV-chipkaart aan product
+                ovchipkaartProductDAO.addProduct(nieuwProduct.getProductNummer(), ovChipkaart.getKaartNummer());
+                session.commit();
+                System.out.println("product (" + nieuwProduct + ") gekoppeld aan ovChipkaart: " + ovChipkaart);
+
+                // Haal alle producten op van een OV-Chipkaart
+                List<Product> productenVanOVChipkaart = ovchipkaartProductDAO.getProductenByOVChipkaart(ovChipkaart.getKaartNummer());
+                System.out.println("Alle producten van ovchipkaart: ");
+                for (Product product : productenVanOVChipkaart) {
+                    System.out.println(product);
+                }
+
+                // Haal alle ov-chipkaarten op die bij een product horen
+                List<OVChipkaart> ovChipkaartenVanProduct = ovchipkaartProductDAO.getOVChipkaartenByProduct(nieuwProduct.getProductNummer());
+                System.out.println("Alle ovchipkaarten van product: ");
+                for (OVChipkaart ovchipkaarts : ovChipkaartenVanProduct) {
+                    System.out.println(ovchipkaarts);
+                }
+
+                // Haal alle producten en ov-chipkaarten op
+                List<OVChipkaartProduct> productenEnChipkaarten = ovchipkaartProductDAO.getOVChipkaartProducten();
+                System.out.println("Alle ovchipkaarten met gelinkte producten: ");
+                for (OVChipkaartProduct ovchipkaartenProducten : productenEnChipkaarten) {
+                    System.out.println(ovchipkaartenProducten);
+                }
+
+                // Verwijder producten bij ov-chipkaart
+                ovchipkaartProductDAO.deleteProduct(nieuwProduct.getProductNummer(), ovChipkaart.getKaartNummer());
+                session.commit();
+                System.out.println("producten verwijderd van ovchipkaart: " + ovChipkaart);
 
                 // Verwijder product
                 productDAO.delete(nieuwProduct);

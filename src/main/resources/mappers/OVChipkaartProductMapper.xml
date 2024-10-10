@@ -42,11 +42,10 @@
     <select id="getOVChipkaartProducten" resultMap="OVChipkaartProductResultMap">
         SELECT product_nummer, kaart_nummer
         FROM ov_chipkaart_product
-        WHERE kaart_nummer = #{kaartNummer}
     </select>
 
 
-    <select id="getProductenByOVChipkaart" resultMap="OVChipkaartProductResultMap">
+    <select id="getProductenByOVChipkaart" resultMap="ProductResultMap">
         SELECT o.kaart_nummer, p.product_nummer, p.naam
         FROM ov_chipkaart o
         JOIN ov_chipkaart_product op ON o.kaart_nummer = op.kaart_nummer

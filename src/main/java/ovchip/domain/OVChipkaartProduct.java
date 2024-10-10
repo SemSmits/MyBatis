@@ -26,4 +26,12 @@ public class OVChipkaartProduct {
     public void setKaartNummer(int kaartNummer) {
         this.kaartNummer = kaartNummer;
     }
+
+    @Override
+    public String toString() {
+        return "OVChipkaartProduct{" +
+                "productNummer=" + productNummer +
+                ", kaartNummer=" + kaartNummer +
+                '}';
+    }
 }

@@ -5,6 +5,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import ovchip.domain.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class OVChipkaartProductDAOMyBatis implements OVChipkaartProductDAO {
     private SqlSessionFactory sqlSessionFactory;
@@ -16,8 +17,7 @@ public class OVChipkaartProductDAOMyBatis implements OVChipkaartProductDAO {
     @Override
     public void addProduct(int productNummer, int kaartNummer) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            OVChipkaartProduct productCard = new OVChipkaartProduct(productNummer, kaartNummer);
-            session.insert("ovchip.dao.OVChipkaartProductDAO.addProduct", productCard);
+            session.insert("ovchip.dao.OVChipkaartProductDAO.addProduct", Map.of("kaartNummer", kaartNummer, "productNummer", productNummer));
             session.commit();
         }
     }
@@ -32,9 +32,9 @@ public class OVChipkaartProductDAOMyBatis implements OVChipkaartProductDAO {
     }
 
     @Override
-    public List<OVChipkaartProduct> getOVChipkaartProducten(int kaartNummer) {
+    public List<OVChipkaartProduct> getOVChipkaartProducten() {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            return session.selectList("ovchip.dao.OVChipkaartProductDAO.getOVChipkaartProducten", kaartNummer);
+            return session.selectList("ovchip.dao.OVChipkaartProductDAO.getOVChipkaartProducten");
         }
     }
 
