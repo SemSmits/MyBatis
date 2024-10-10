@@ -72,12 +72,32 @@ public class Main {
                 session.commit();
                 System.out.println("OVChipkaart toegevoegd: " + ovChipkaart);
 
+                // Update de OV-Chipkaart
+                ovChipkaart.setGeldigTot(LocalDate.of(2026, 12, 31));
+                ovChipkaart.setKlasse(3);
+                ovchipkaartDAO.update(ovChipkaart);
+                session.commit();
+                System.out.println("OVchipkaart bijgewerkt: " + ovChipkaart);
+
+                // Alle OV-Chipkaarten ophalen
+                List<OVChipkaart> ovchipkaarten = ovchipkaartDAO.findAll();
+                System.out.println("Alle ovchipkaarten:");
+                for (OVChipkaart ovchipkaart : ovchipkaarten) {
+                    System.out.println(ovchipkaart);
+                }
+
+
                 // Haal alle OV-chipkaarten op van de reiziger
                 List<OVChipkaart> ovChipkaarten = ovchipkaartDAO.findByReiziger(nieuweReiziger.getId());
                 System.out.println("OVChipkaarten van reiziger:");
                 for (OVChipkaart kaart : ovChipkaarten) {
                     System.out.println(kaart);
                 }
+
+                // Haal OV-chipkaart op met id
+                ovchipkaartDAO.findById(ovChipkaart.getKaartNummer());
+                session.commit();
+                System.out.println("OV-chipkaart met id: " + ovChipkaart.getKaartNummer() + "\n" + ovChipkaart);
 
                 // Verwijder eerst de gerelateerde OV-chipkaarten
                 for (OVChipkaart kaart : ovChipkaarten) {
