@@ -12,7 +12,7 @@
         <result property="prijs" column="prijs"/>
     </resultMap>
 
-    <insert id="'save" parameterType="ovchip.domain.Product">
+    <insert id="save" parameterType="ovchip.domain.Product">
         INSERT INTO product (product_nummer, naam, beschrijving, prijs)
         VALUES (#{productNummer}, #{naam}, #{beschrijving}, #{prijs})
     </insert>

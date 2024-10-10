@@ -1,8 +1,10 @@
 package ovchip.main;
 
 import ovchip.dao.OVChipkaartDAO;
+import ovchip.dao.ProductDAO;
 import ovchip.dao.ReizigerDAO;
 import ovchip.domain.OVChipkaart;
+import ovchip.domain.Product;
 import ovchip.domain.Reiziger;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -24,6 +26,7 @@ public class Main {
                 // Krijg de ReizigerMapper
                 ReizigerDAO reizigerDAO = session.getMapper(ReizigerDAO.class);
                 OVChipkaartDAO ovchipkaartDAO = session.getMapper(OVChipkaartDAO.class);
+                ProductDAO productDAO = session.getMapper(ProductDAO.class);
 
                 // Voeg een nieuwe reiziger toe
                 Reiziger nieuweReiziger = new Reiziger();
@@ -98,6 +101,39 @@ public class Main {
                 ovchipkaartDAO.findById(ovChipkaart.getKaartNummer());
                 session.commit();
                 System.out.println("OV-chipkaart met id: " + ovChipkaart.getKaartNummer() + "\n" + ovChipkaart);
+
+                // Voeg nieuw product toe
+                Product nieuwProduct = new Product();
+                nieuwProduct.setProductNummer(10);
+                nieuwProduct.setNaam("test product");
+                nieuwProduct.setBeschrijving("beschrijving test product");
+                nieuwProduct.setPrijs(10);
+                productDAO.save(nieuwProduct);
+                session.commit();
+                System.out.println("Product toegevoegd: " + nieuwProduct);
+
+                // Alle producten ophalen
+                List<Product> producten = productDAO.findAll();
+                System.out.println("Alle producten:");
+                for (Product product : producten) {
+                    System.out.println(product);
+                }
+
+                // Update product
+                nieuwProduct.setPrijs(15);
+                productDAO.update(nieuwProduct);
+                session.commit();
+                System.out.println("Product bijgewerkt: " + nieuwProduct);
+
+                // product ophalen van id
+                productDAO.findById(nieuwProduct.getProductNummer());
+                session.commit();
+                System.out.println("Product met id: " + nieuwProduct.getProductNummer() + "\n" + nieuwProduct);
+
+                // Verwijder product
+                productDAO.delete(nieuwProduct);
+                session.commit();
+                System.out.println("product verwijderd: " + nieuwProduct);
 
                 // Verwijder eerst de gerelateerde OV-chipkaarten
                 for (OVChipkaart kaart : ovChipkaarten) {
