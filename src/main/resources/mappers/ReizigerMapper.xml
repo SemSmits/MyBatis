@@ -7,10 +7,10 @@
 
     <resultMap id="ReizigerResultMap" type="ovchip.domain.Reiziger">
         <id property="id" column="reiziger_id"/>
-        <id property="voorletters" column="voorletters"/>
-        <id property="tussenvoegsel" column="tussenvoegsel"/>
-        <id property="achternaam" column="achternaam"/>
-        <id property="geboortedatum" column="geboortedatum"/>
+        <result property="voorletters" column="voorletters"/>
+        <result property="tussenvoegsel" column="tussenvoegsel"/>
+        <result property="achternaam" column="achternaam"/>
+        <result property="geboortedatum" column="geboortedatum"/>
     </resultMap>
 
     <select id="findAll" resultMap="ReizigerResultMap">
